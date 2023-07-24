@@ -1,4 +1,4 @@
-package miv.dev.wheelchair.friendly
+package miv.dev.wheelchair.friendly.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
