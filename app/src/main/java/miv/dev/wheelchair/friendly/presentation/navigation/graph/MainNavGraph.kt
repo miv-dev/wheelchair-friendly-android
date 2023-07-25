@@ -17,7 +17,7 @@ fun MainNavGraph(
 	
 	) {
 	NavHost(navController = navHostController, startDestination = Screen.Home.route, modifier = modifier) {
-		composable(Screen.Map.route) { mapScreenContent() }
+		composable(Screen.Places.route) { mapScreenContent() }
 		composable(Screen.Settings.route) { settingsScreenContent() }
 		composable(Screen.Home.route) { homeScreenContent() }
 	}

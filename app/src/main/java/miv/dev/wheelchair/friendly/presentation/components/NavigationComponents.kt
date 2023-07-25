@@ -1,14 +1,12 @@
 package miv.dev.wheelchair.friendly.presentation.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.layout.MeasurePolicy
 import androidx.compose.ui.layout.layoutId
@@ -24,21 +22,45 @@ fun AppNavigationRail(
 	selectedDestination: String,
 	navigationContentPosition: AppContentPosition,
 	navigateToTopLevelDestination: (NavigationItem) -> Unit,
-	) {
+) {
 	NavigationRail(containerColor = MaterialTheme.colorScheme.inverseOnSurface) {
 		Column(
-			modifier = Modifier.layoutId(LayoutType.CONTENT),
-			horizontalAlignment = Alignment.CenterHorizontally,
-			verticalArrangement = Arrangement.spacedBy(4.dp)
+			horizontalAlignment = Alignment.CenterHorizontally
 		) {
-			TOP_LEVEL_DESTINATIONS.forEach { item ->
-				
-				NavigationRailItem(
-					selected = selectedDestination == item.screen.route,
-					onClick = { navigateToTopLevelDestination(item) },
-					icon = { Icon(item.icon, contentDescription = null) },
-					label = { Text(text = stringResource(item.titleResId)) },
-				)
+			Column(
+				modifier = Modifier.layoutId(LayoutType.HEADER),
+				horizontalAlignment = Alignment.CenterHorizontally,
+				verticalArrangement = Arrangement.spacedBy(4.dp)
+			) {
+				FloatingActionButton(
+					onClick = { /*TODO*/ },
+					modifier = Modifier.padding(top = 8.dp, bottom = 32.dp),
+					containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+					contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+				) {
+					Icon(
+						imageVector = Icons.Rounded.Add,
+						contentDescription = "Add Place",
+						modifier = Modifier.size(18.dp)
+					)
+				}
+				Spacer(Modifier.height(8.dp)) // NavigationRailHeaderPadding
+				Spacer(Modifier.height(4.dp)) // NavigationRailVerticalPadding
+			}
+			Column(
+				modifier = Modifier.layoutId(LayoutType.CONTENT),
+				horizontalAlignment = Alignment.CenterHorizontally,
+				verticalArrangement = Arrangement.spacedBy(4.dp)
+			) {
+				TOP_LEVEL_DESTINATIONS.forEach { item ->
+					
+					NavigationRailItem(
+						selected = selectedDestination == item.screen.route,
+						onClick = { navigateToTopLevelDestination(item) },
+						icon = { Icon(item.icon, contentDescription = null) },
+						label = { Text(text = stringResource(item.titleResId)) },
+					)
+				}
 			}
 		}
 	}
@@ -64,7 +86,7 @@ fun navigationMeasurePolicy(
 			constraints.offset(vertical = -headerPlaceable.height)
 		)
 		layout(constraints.maxWidth, constraints.maxHeight) {
-			// Place the header, this goes at the top
+			// Places the header, this goes at the top
 			headerPlaceable.placeRelative(0, 0)
 			
 			// Determine how much space is not taken up by the content

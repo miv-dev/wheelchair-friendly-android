@@ -17,7 +17,7 @@ class App : Application() {
 	}
 	
 	init {
-		Log.d(TAG, "Set Map Api Key ")
+		Log.d(TAG, "Set Places Api Key ")
 		MapKitFactory.setApiKey(MAPKIT_API_KEY);
 	}
 	

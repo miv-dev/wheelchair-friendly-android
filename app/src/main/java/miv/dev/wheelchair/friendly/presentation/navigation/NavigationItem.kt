@@ -17,8 +17,8 @@ sealed class NavigationItem(
     )
 
     object Map: NavigationItem(
-        screen = Screen.Map,
-        titleResId = R.string.navigation_item_map,
+        screen = Screen.Places,
+        titleResId = R.string.navigation_item_places,
         icon = Icons.Rounded.PinDrop
     )
 

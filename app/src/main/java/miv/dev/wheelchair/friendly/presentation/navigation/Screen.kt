@@ -4,7 +4,7 @@ sealed class Screen(val route: String) {
 	
 	object Home : Screen(ROUTE_HOME)
 	object Main : Screen(ROUTE_MAIN)
-	object Map : Screen(ROUTE_MAP)
+	object Places : Screen(ROUTE_PLACES)
 	object Settings : Screen(ROUTE_SETTINGS)
 	
 	
@@ -12,7 +12,7 @@ sealed class Screen(val route: String) {
 		
 		const val ROUTE_MAIN = "main"
 		const val ROUTE_HOME = "home"
-		const val ROUTE_MAP = "map"
+		const val ROUTE_PLACES = "places"
 		const val ROUTE_SETTINGS = "settings"
 		
 	}
