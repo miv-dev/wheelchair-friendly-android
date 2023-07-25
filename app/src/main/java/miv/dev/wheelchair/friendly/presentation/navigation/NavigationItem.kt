@@ -29,3 +29,9 @@ sealed class NavigationItem(
     )
     
 }
+
+val TOP_LEVEL_DESTINATIONS = listOf(
+    NavigationItem.Home,
+    NavigationItem.Map,
+    NavigationItem.Settings,
+)

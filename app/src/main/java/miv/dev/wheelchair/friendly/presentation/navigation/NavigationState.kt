@@ -19,6 +19,17 @@ class NavigationState(
             
         }
     }
+    fun navigateToTopLevelDestination(navItem: NavigationItem) {
+        navHostController.navigate(navItem.screen.route) {
+            popUpTo(navHostController.graph.findStartDestination().id) {
+                saveState = true
+            }
+            launchSingleTop = true
+            restoreState = true
+            
+        }
+    }
+    
     
 }
 

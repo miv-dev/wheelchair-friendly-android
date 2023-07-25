@@ -2,19 +2,21 @@ package miv.dev.wheelchair.friendly.presentation.screens.map
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.window.layout.DisplayFeature
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.mapview.MapView
+import miv.dev.wheelchair.friendly.utils.AppContentType
+import miv.dev.wheelchair.friendly.utils.AppNavigationType
 
 @Composable
-fun MapScreen() {
+fun MapScreen(contentType: AppContentType, navigationType: AppNavigationType, displayFeatures: List<DisplayFeature>) {
 	MapScreenContent()
 }
 

@@ -52,9 +52,12 @@ dependencies {
     // yandex map kit
     implementation 'com.yandex.android:maps.mobile:4.3.1-lite'
 
+    implementation 'androidx.compose.material3:material3-window-size-class:1.2.0-alpha03'
+	implementation 'com.google.accompanist:accompanist-adaptive:0.31.5-beta'
 
     // dependency injection
     implementation 'com.google.dagger:dagger:2.44'
+    implementation 'androidx.window:window:1.1.0'
     kapt 'com.google.dagger:dagger-compiler:2.44'
 
     // http call
