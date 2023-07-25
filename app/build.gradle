@@ -49,6 +49,8 @@ android {
 }
 
 dependencies {
+    // yandex map kit
+    implementation 'com.yandex.android:maps.mobile:4.3.1-lite'
 
 
     // dependency injection
