@@ -1,4 +1,4 @@
-package miv.dev.wheelchair.friendly.presentation.components
+package miv.dev.wheelchair.friendly.presentation.components.nav
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding

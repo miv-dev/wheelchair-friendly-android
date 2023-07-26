@@ -1,4 +1,4 @@
-package miv.dev.wheelchair.friendly.presentation.components
+package miv.dev.wheelchair.friendly.presentation.components.nav
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Icon

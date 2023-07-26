@@ -12,13 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.window.layout.DisplayFeature
-import miv.dev.wheelchair.friendly.presentation.components.AppBottomNavigationBar
-import miv.dev.wheelchair.friendly.presentation.components.AppNavigationRail
+import miv.dev.wheelchair.friendly.presentation.components.nav.AppBottomNavigationBar
+import miv.dev.wheelchair.friendly.presentation.components.nav.AppNavigationRail
 import miv.dev.wheelchair.friendly.presentation.navigation.NavigationItem
 import miv.dev.wheelchair.friendly.presentation.navigation.Screen
 import miv.dev.wheelchair.friendly.presentation.navigation.graph.MainNavGraph
 import miv.dev.wheelchair.friendly.presentation.navigation.rememberNavigationState
-import miv.dev.wheelchair.friendly.presentation.screens.map.MapScreen
+import miv.dev.wheelchair.friendly.presentation.screens.places.PlacesScreen
 import miv.dev.wheelchair.friendly.utils.AppContentPosition
 import miv.dev.wheelchair.friendly.utils.AppContentType
 import miv.dev.wheelchair.friendly.utils.AppNavigationType
@@ -74,7 +74,7 @@ fun WheelchairAppContent(
 				modifier = Modifier.weight(1f),
 				navHostController = navHostController,
 				mapScreenContent = {
-					MapScreen(
+					PlacesScreen(
 						contentType = contentType,
 						navigationType = navigationType,
 						displayFeatures = displayFeatures

@@ -1,4 +1,4 @@
-package miv.dev.wheelchair.friendly.presentation.components
+package miv.dev.wheelchair.friendly.presentation.components.nav
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -34,6 +34,7 @@ fun AppNavigationRail(
 			) {
 				FloatingActionButton(
 					onClick = { /*TODO*/ },
+					elevation = FloatingActionButtonDefaults.elevation(0.dp),
 					modifier = Modifier.padding(top = 8.dp, bottom = 32.dp),
 					containerColor = MaterialTheme.colorScheme.tertiaryContainer,
 					contentColor = MaterialTheme.colorScheme.onTertiaryContainer

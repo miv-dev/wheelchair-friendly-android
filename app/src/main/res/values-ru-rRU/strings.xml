@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Wheelchair Friendly</string>
+    <string name="navigation_item_settings">Настройки</string>
+    <string name="navigation_item_places">Места</string>
+    <string name="navigation_item_home">Главная</string>
+</resources>
