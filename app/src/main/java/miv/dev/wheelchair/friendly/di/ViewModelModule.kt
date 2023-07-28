@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import miv.dev.wheelchair.friendly.presentation.AppViewModel
 import miv.dev.wheelchair.friendly.presentation.auth.LoginScreenViewModel
+import miv.dev.wheelchair.friendly.presentation.screens.profile.ProfileScreenViewModel
 
 @Module
 interface ViewModelModule {
@@ -21,6 +22,13 @@ interface ViewModelModule {
 	@Binds
 	fun bindLoginScreenViewModel(
 		viewModel: LoginScreenViewModel
+	): ViewModel
+	
+	@IntoMap
+	@ViewModelKey(ProfileScreenViewModel::class)
+	@Binds
+	fun bindProfileScreenViewModel(
+		viewModel: ProfileScreenViewModel
 	): ViewModel
 	
 }

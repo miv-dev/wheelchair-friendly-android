@@ -12,13 +12,13 @@ fun MainNavGraph(
 	modifier: Modifier = Modifier,
 	navHostController: NavHostController,
 	mapScreenContent: @Composable () -> Unit,
-	settingsScreenContent: @Composable () -> Unit,
+	profileScreenContent: @Composable () -> Unit,
 	homeScreenContent: @Composable () -> Unit,
 	
 	) {
 	NavHost(navController = navHostController, startDestination = Screen.Home.route, modifier = modifier) {
 		composable(Screen.Places.route) { mapScreenContent() }
-		composable(Screen.Settings.route) { settingsScreenContent() }
+		composable(Screen.Profile.route) { profileScreenContent() }
 		composable(Screen.Home.route) { homeScreenContent() }
 	}
 }

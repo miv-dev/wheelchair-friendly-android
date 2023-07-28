@@ -10,6 +10,7 @@ interface AuthenticationRepository {
 	
 	suspend fun login(credentials: Credentials): Result<Unit>
 	
+	fun logout()
 	suspend fun checkAuthState()
 }
 

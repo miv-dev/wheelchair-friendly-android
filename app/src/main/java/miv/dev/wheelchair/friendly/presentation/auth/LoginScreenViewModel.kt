@@ -36,6 +36,11 @@ class LoginScreenViewModel @Inject constructor(
 			email = _screenState.value.email,
 			password = _screenState.value.password
 		)
+		_screenState.value = _screenState.value.copy(
+			isLoading = true,
+			loginIsSuccess = null,
+			
+		)
 		scope.launch {
 			loginUseCase(credentials)
 				.fold(
@@ -54,6 +59,10 @@ class LoginScreenViewModel @Inject constructor(
 					}
 				)
 		}
+	}
+	
+	fun clearState() {
+		_screenState.value = LoginScreenUiState()
 	}
 	
 	companion object{

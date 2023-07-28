@@ -55,4 +55,11 @@ class AuthenticationRepositoryImpl @Inject constructor(
 		return Result.failure(RuntimeException())
 	}
 	
+	override fun logout() {
+		authenticationDataSource.logout()
+		scope.launch {
+			_authState.emit(AuthState.NonAuthorized)
+		}
+	}
+	
 }

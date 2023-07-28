@@ -44,4 +44,8 @@ class AuthenticationDataSource @Inject constructor() {
 		
 	}
 	
+	fun logout() {
+		auth.signOut()
+	}
+	
 }

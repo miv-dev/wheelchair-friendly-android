@@ -7,16 +7,21 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.window.layout.DisplayFeature
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import miv.dev.wheelchair.friendly.domain.entities.AuthState
 import miv.dev.wheelchair.friendly.getApplicationComponent
+import miv.dev.wheelchair.friendly.presentation.auth.Keyboard
 import miv.dev.wheelchair.friendly.presentation.auth.LoginScreen
+import miv.dev.wheelchair.friendly.presentation.auth.keyboardAsState
 import miv.dev.wheelchair.friendly.presentation.components.nav.AppBottomNavigationBar
 import miv.dev.wheelchair.friendly.presentation.components.nav.AppNavigationRail
 import miv.dev.wheelchair.friendly.presentation.navigation.NavigationItem
@@ -24,6 +29,7 @@ import miv.dev.wheelchair.friendly.presentation.navigation.Screen
 import miv.dev.wheelchair.friendly.presentation.navigation.graph.MainNavGraph
 import miv.dev.wheelchair.friendly.presentation.navigation.rememberNavigationState
 import miv.dev.wheelchair.friendly.presentation.screens.places.PlacesScreen
+import miv.dev.wheelchair.friendly.presentation.screens.profile.ProfileScreen
 import miv.dev.wheelchair.friendly.utils.AppContentPosition
 import miv.dev.wheelchair.friendly.utils.AppContentType
 import miv.dev.wheelchair.friendly.utils.AppNavigationType
@@ -66,6 +72,20 @@ fun WheelchairAppContent(
 	val component = getApplicationComponent()
 	val vm: AppViewModel = viewModel(factory = component.getViewModelFactory())
 	val authState = vm.authState.collectAsState(AuthState.Initial)
+	val keyboardState by keyboardAsState()
+	val theme = MaterialTheme.colorScheme
+	
+	
+	val systemUiController = rememberSystemUiController()
+	LaunchedEffect(Unit) {
+		systemUiController.setStatusBarColor(
+			color = theme.background
+		)
+		systemUiController.setNavigationBarColor(
+			color = theme.background
+		)
+	}
+	
 	when (authState.value) {
 		AuthState.Initial -> {
 		
@@ -95,12 +115,14 @@ fun WheelchairAppContent(
 								displayFeatures = displayFeatures
 							)
 						},
-						settingsScreenContent = { /*TODO*/ },
+						profileScreenContent = {
+							ProfileScreen()
+						},
 						homeScreenContent = {
 						
 						},
 					)
-					AnimatedVisibility(visible = navigationType == AppNavigationType.BOTTOM_NAVIGATION) {
+					AnimatedVisibility(visible = navigationType == AppNavigationType.BOTTOM_NAVIGATION && keyboardState == Keyboard.Closed) {
 						AppBottomNavigationBar(
 							selectedDestination = selectedDestination,
 							navigateToTopLevelDestination = navigateToTopLevelDestination
@@ -118,7 +140,6 @@ fun WheelchairAppContent(
 			)
 		}
 	}
-	
 	
 	
 }

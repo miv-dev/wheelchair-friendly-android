@@ -5,12 +5,14 @@ sealed class Screen(val route: String) {
 	object Home : Screen(ROUTE_HOME)
 	object Main : Screen(ROUTE_MAIN)
 	object Places : Screen(ROUTE_PLACES)
+	object Profile : Screen(ROUTE_PROFILE)
 	object Settings : Screen(ROUTE_SETTINGS)
 	
 	
 	companion object {
 		
 		const val ROUTE_MAIN = "main"
+		const val ROUTE_PROFILE = "profile"
 		const val ROUTE_HOME = "home"
 		const val ROUTE_PLACES = "places"
 		const val ROUTE_SETTINGS = "settings"
