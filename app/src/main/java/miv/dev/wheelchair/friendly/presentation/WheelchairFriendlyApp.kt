@@ -11,7 +11,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -103,7 +102,7 @@ fun WheelchairAppContent(
 				Column(
 					modifier = Modifier
 						.fillMaxSize()
-						.background(MaterialTheme.colorScheme.inverseOnSurface)
+						.background(if (navigationType == AppNavigationType.NAVIGATION_RAIL) theme.inverseOnSurface else theme.background)
 				) {
 					MainNavGraph(
 						modifier = Modifier.weight(1f),
