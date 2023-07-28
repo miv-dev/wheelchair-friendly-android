@@ -4,4 +4,5 @@
     <string name="navigation_item_settings">Настройки</string>
     <string name="navigation_item_places">Места</string>
     <string name="navigation_item_home">Главная</string>
+    <string name="unhandled_error">Unhandled Error\n</string>
 </resources>

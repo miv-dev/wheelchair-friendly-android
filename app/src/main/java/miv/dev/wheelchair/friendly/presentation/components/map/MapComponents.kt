@@ -31,6 +31,7 @@ fun Map(
 	)
 }
 
+
 @Composable
 fun rememberMapViewWithLifecycle(): MapView {
 	val context = LocalContext.current

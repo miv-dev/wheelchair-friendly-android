@@ -31,7 +31,7 @@ fun PlacesScreen(contentType: AppContentType, navigationType: AppNavigationType,
 	if (contentType == AppContentType.DUAL_PANE) {
 		TwoPane(
 			first = {
-				Column() {
+				Column {
 					AppDockedSearchBar(
 						modifier = Modifier
 							.fillMaxWidth()

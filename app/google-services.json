@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "786857082526",
+    "project_id": "wheelchair-friendly",
+    "storage_bucket": "wheelchair-friendly.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:786857082526:android:0dd329f75c89ffb95d058f",
+        "android_client_info": {
+          "package_name": "miv.dev.wheelchair.friendly"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "786857082526-q6q4tndnv0gv33sqpra0oc0o011j6ono.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhff_IJspyQPMFZ_QacFSgX7SIhcDmgzA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "786857082526-q6q4tndnv0gv33sqpra0oc0o011j6ono.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

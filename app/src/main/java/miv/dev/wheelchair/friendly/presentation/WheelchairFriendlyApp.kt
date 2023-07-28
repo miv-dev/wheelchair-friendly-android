@@ -7,11 +7,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.window.layout.DisplayFeature
+import miv.dev.wheelchair.friendly.domain.entities.AuthState
+import miv.dev.wheelchair.friendly.getApplicationComponent
+import miv.dev.wheelchair.friendly.presentation.auth.LoginScreen
 import miv.dev.wheelchair.friendly.presentation.components.nav.AppBottomNavigationBar
 import miv.dev.wheelchair.friendly.presentation.components.nav.AppNavigationRail
 import miv.dev.wheelchair.friendly.presentation.navigation.NavigationItem
@@ -57,40 +62,63 @@ fun WheelchairAppContent(
 	navigateToTopLevelDestination: (NavigationItem) -> Unit,
 	navigationContentPosition: AppContentPosition,
 ) {
-	Row(modifier = modifier.fillMaxSize()) {
-		AnimatedVisibility(visible = navigationType == AppNavigationType.NAVIGATION_RAIL) {
-			AppNavigationRail(
-				selectedDestination = selectedDestination,
-				navigationContentPosition = navigationContentPosition,
-				navigateToTopLevelDestination = navigateToTopLevelDestination
-			)
+	
+	val component = getApplicationComponent()
+	val vm: AppViewModel = viewModel(factory = component.getViewModelFactory())
+	val authState = vm.authState.collectAsState(AuthState.Initial)
+	when (authState.value) {
+		AuthState.Initial -> {
+		
 		}
-		Column(
-			modifier = Modifier
-				.fillMaxSize()
-				.background(MaterialTheme.colorScheme.inverseOnSurface)
-		) {
-			MainNavGraph(
-				modifier = Modifier.weight(1f),
-				navHostController = navHostController,
-				mapScreenContent = {
-					PlacesScreen(
-						contentType = contentType,
-						navigationType = navigationType,
-						displayFeatures = displayFeatures
+		
+		AuthState.Authorized -> {
+			Row(modifier = modifier.fillMaxSize()) {
+				AnimatedVisibility(visible = navigationType == AppNavigationType.NAVIGATION_RAIL) {
+					AppNavigationRail(
+						selectedDestination = selectedDestination,
+						navigationContentPosition = navigationContentPosition,
+						navigateToTopLevelDestination = navigateToTopLevelDestination
 					)
-				},
-				settingsScreenContent = { /*TODO*/ },
-				homeScreenContent = {
-				
-				},
-			)
-			AnimatedVisibility(visible = navigationType == AppNavigationType.BOTTOM_NAVIGATION) {
-				AppBottomNavigationBar(
-					selectedDestination = selectedDestination,
-					navigateToTopLevelDestination = navigateToTopLevelDestination
-				)
+				}
+				Column(
+					modifier = Modifier
+						.fillMaxSize()
+						.background(MaterialTheme.colorScheme.inverseOnSurface)
+				) {
+					MainNavGraph(
+						modifier = Modifier.weight(1f),
+						navHostController = navHostController,
+						mapScreenContent = {
+							PlacesScreen(
+								contentType = contentType,
+								navigationType = navigationType,
+								displayFeatures = displayFeatures
+							)
+						},
+						settingsScreenContent = { /*TODO*/ },
+						homeScreenContent = {
+						
+						},
+					)
+					AnimatedVisibility(visible = navigationType == AppNavigationType.BOTTOM_NAVIGATION) {
+						AppBottomNavigationBar(
+							selectedDestination = selectedDestination,
+							navigateToTopLevelDestination = navigateToTopLevelDestination
+						)
+					}
+				}
 			}
 		}
+		
+		AuthState.NonAuthorized -> {
+			LoginScreen(
+				contentType = contentType,
+				navigationType = navigationType,
+				displayFeatures = displayFeatures
+			)
+		}
 	}
+	
+	
+	
 }

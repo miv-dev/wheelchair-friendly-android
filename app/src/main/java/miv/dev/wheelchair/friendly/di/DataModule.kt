@@ -1,5 +1,6 @@
 package miv.dev.wheelchair.friendly.di
 
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import io.ktor.client.*
@@ -7,6 +8,8 @@ import io.ktor.client.engine.android.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
+import miv.dev.wheelchair.friendly.data.repositories.AuthenticationRepositoryImpl
+import miv.dev.wheelchair.friendly.domain.repositories.AuthenticationRepository
 import java.net.InetSocketAddress
 import java.net.Proxy
 
@@ -14,6 +17,9 @@ import java.net.Proxy
 @Module
 interface DataModule {
 	
+	@Binds
+	@ApplicationScope
+	fun bindAuthenticationRepository(impl: AuthenticationRepositoryImpl): AuthenticationRepository
 	
 	companion object {
 		@Provides
