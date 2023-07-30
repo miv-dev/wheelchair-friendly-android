@@ -8,11 +8,18 @@ sealed class Screen(val route: String) {
 	object Profile : Screen(ROUTE_PROFILE)
 	object Settings : Screen(ROUTE_SETTINGS)
 	
+	object Login : Screen(ROUTE_LOGIN)
+	object Register : Screen(ROUTE_REGISTER)
+	object Welcome : Screen(ROUTE_WELCOME)
+	
 	
 	companion object {
 		
 		const val ROUTE_MAIN = "main"
 		const val ROUTE_PROFILE = "profile"
+		const val ROUTE_LOGIN = "login"
+		const val ROUTE_REGISTER = "register"
+		const val ROUTE_WELCOME = "welcome"
 		const val ROUTE_HOME = "home"
 		const val ROUTE_PLACES = "places"
 		const val ROUTE_SETTINGS = "settings"

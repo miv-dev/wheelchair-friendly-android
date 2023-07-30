@@ -48,4 +48,15 @@ class AuthenticationDataSource @Inject constructor() {
 		auth.signOut()
 	}
 	
+	suspend fun createWithEmailAndPassword(credentials: Credentials.EmailAndPassword): Result<FirebaseUser> {
+		return try {
+			val result = auth
+				.createUserWithEmailAndPassword(credentials.email, credentials.password)
+				.await()
+			Result.success(result.user ?: throw RuntimeException("User is null"))
+		} catch (e: Exception) {
+			Result.failure(e)
+		}
+	}
+	
 }

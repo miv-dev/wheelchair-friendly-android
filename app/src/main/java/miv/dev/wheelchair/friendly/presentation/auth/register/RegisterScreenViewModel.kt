@@ -1,26 +1,25 @@
-package miv.dev.wheelchair.friendly.presentation.auth
+package miv.dev.wheelchair.friendly.presentation.auth.register
 
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import miv.dev.wheelchair.friendly.R
 import miv.dev.wheelchair.friendly.domain.entities.Credentials
 import miv.dev.wheelchair.friendly.domain.usecases.LoginUseCase
+import miv.dev.wheelchair.friendly.domain.usecases.RegisterUseCase
 import javax.inject.Inject
 
 
-class LoginScreenViewModel @Inject constructor(
-	private val loginUseCase: LoginUseCase
+class RegisterScreenViewModel @Inject constructor(
+	private val registerUseCase: RegisterUseCase
 ) : ViewModel() {
 	
 	
 	private val scope = viewModelScope
 	
-	private val _screenState = MutableStateFlow(LoginScreenUiState())
-	val screenState: StateFlow<LoginScreenUiState>
+	private val _screenState = MutableStateFlow(RegisterScreenState())
+	val screenState: StateFlow<RegisterScreenState>
 		get() = _screenState
 	
 	fun updateEmail(email: String) {
@@ -31,7 +30,7 @@ class LoginScreenViewModel @Inject constructor(
 		_screenState.value = _screenState.value.copy(password = password)
 	}
 	
-	fun loginWithEmailAndPassword() {
+	fun registerWithEmailAndPassword() {
 		val credentials = Credentials.EmailAndPassword(
 			email = _screenState.value.email,
 			password = _screenState.value.password
@@ -42,7 +41,7 @@ class LoginScreenViewModel @Inject constructor(
 			
 		)
 		scope.launch {
-			loginUseCase(credentials)
+			registerUseCase(credentials)
 				.fold(
 					onSuccess = {
 						_screenState.value = _screenState.value.copy(
@@ -62,7 +61,7 @@ class LoginScreenViewModel @Inject constructor(
 	}
 	
 	fun clearState() {
-		_screenState.value = LoginScreenUiState()
+		_screenState.value = RegisterScreenState()
 	}
 	
 	companion object{

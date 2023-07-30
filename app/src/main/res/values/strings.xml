@@ -10,4 +10,7 @@
     <string name="login_screen_title">Login</string>
     <string name="navigation_item_profile">Profile</string>
     <string name="btn_logout">Logout</string>
+    <string name="btn_register">Register</string>
+    <string name="register_screen_title">Register</string>
+    <string name="or_continue_with_email">or continue with email</string>
 </resources>

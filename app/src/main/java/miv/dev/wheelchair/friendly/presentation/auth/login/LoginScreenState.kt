@@ -1,4 +1,4 @@
-package miv.dev.wheelchair.friendly.presentation.auth
+package miv.dev.wheelchair.friendly.presentation.auth.login
 
 
 data class LoginScreenUiState(

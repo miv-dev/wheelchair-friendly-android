@@ -55,6 +55,27 @@ class AuthenticationRepositoryImpl @Inject constructor(
 		return Result.failure(RuntimeException())
 	}
 	
+	override suspend fun register(credentials: Credentials): Result<Unit> {
+		val result = when (credentials) {
+			is Credentials.EmailAndPassword -> {
+				authenticationDataSource.createWithEmailAndPassword(credentials)
+			}
+			
+			is Credentials.Google -> {
+				authenticationDataSource.loginWithCredentials(credentials.credential)
+			}
+		}
+		result.onFailure {
+			_authState.emit(AuthState.NonAuthorized)
+			return Result.failure(it)
+		}.onSuccess {
+			_authState.emit(AuthState.Authorized)
+			return Result.success(Unit)
+		}
+		
+		return Result.failure(RuntimeException())
+	}
+	
 	override fun logout() {
 		authenticationDataSource.logout()
 		scope.launch {

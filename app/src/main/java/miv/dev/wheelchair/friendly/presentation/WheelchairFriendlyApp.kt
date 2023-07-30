@@ -5,7 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -18,20 +20,18 @@ import androidx.window.layout.DisplayFeature
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import miv.dev.wheelchair.friendly.domain.entities.AuthState
 import miv.dev.wheelchair.friendly.getApplicationComponent
-import miv.dev.wheelchair.friendly.presentation.auth.Keyboard
-import miv.dev.wheelchair.friendly.presentation.auth.LoginScreen
-import miv.dev.wheelchair.friendly.presentation.auth.keyboardAsState
+import miv.dev.wheelchair.friendly.presentation.auth.login.LoginScreen
+import miv.dev.wheelchair.friendly.presentation.auth.register.RegisterScreen
 import miv.dev.wheelchair.friendly.presentation.components.nav.AppBottomNavigationBar
 import miv.dev.wheelchair.friendly.presentation.components.nav.AppNavigationRail
 import miv.dev.wheelchair.friendly.presentation.navigation.NavigationItem
 import miv.dev.wheelchair.friendly.presentation.navigation.Screen
+import miv.dev.wheelchair.friendly.presentation.navigation.graph.AuthNavGraph
 import miv.dev.wheelchair.friendly.presentation.navigation.graph.MainNavGraph
 import miv.dev.wheelchair.friendly.presentation.navigation.rememberNavigationState
 import miv.dev.wheelchair.friendly.presentation.screens.places.PlacesScreen
 import miv.dev.wheelchair.friendly.presentation.screens.profile.ProfileScreen
-import miv.dev.wheelchair.friendly.utils.AppContentPosition
-import miv.dev.wheelchair.friendly.utils.AppContentType
-import miv.dev.wheelchair.friendly.utils.AppNavigationType
+import miv.dev.wheelchair.friendly.utils.*
 
 @Composable
 fun WheelchairWrapper(
@@ -132,10 +132,52 @@ fun WheelchairAppContent(
 		}
 		
 		AuthState.NonAuthorized -> {
-			LoginScreen(
-				contentType = contentType,
-				navigationType = navigationType,
-				displayFeatures = displayFeatures
+			val navigationState = rememberNavigationState()
+			AuthNavGraph(
+				navHostController = navigationState.navHostController,
+				loginScreenContent = {
+					LoginScreen(
+						contentType = contentType,
+						navigationType = navigationType,
+						displayFeatures = displayFeatures,
+						onBackPressed = {
+							navigationState.navHostController.popBackStack()
+						},
+						onRegisterPressed = {
+							navigationState.navigateTo(Screen.Register.route)
+						}
+					)
+				},
+				registerScreenContent = {
+					RegisterScreen(
+						contentType = contentType,
+						navigationType = navigationType,
+						displayFeatures = displayFeatures,
+						onBackPressed = {
+							navigationState.navHostController.popBackStack()
+						},
+						onLoginPressed = {
+							navigationState.navigateTo(Screen.Login.route)
+						}
+					)
+					
+				},
+				welcomeScreenContent = {
+					Column {
+						Button(onClick = {
+							navigationState.navigateTo(Screen.Login.route)
+							
+						}) {
+							Text("Login")
+						}
+						Button(onClick = {
+							navigationState.navigateTo(Screen.Register.route)
+							
+						}) {
+							Text("Register")
+						}
+					}
+				},
 			)
 		}
 	}

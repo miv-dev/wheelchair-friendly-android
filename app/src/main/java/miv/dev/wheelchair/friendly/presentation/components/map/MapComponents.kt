@@ -22,7 +22,10 @@ fun Map(
 	
 	AndroidView(
 		modifier = modifier,
-		factory = { mapView },
+		factory = {
+			MapKitFactory.initialize(it)
+			mapView
+		},
 		onRelease = {
 			it.onStart()
 			it.map.mapType = MapType.VECTOR_MAP
@@ -36,7 +39,7 @@ fun Map(
 fun rememberMapViewWithLifecycle(): MapView {
 	val context = LocalContext.current
 	val mapView = remember {
-		MapKitFactory.initialize(context)
+		
 		MapView(context)
 	}
 	
