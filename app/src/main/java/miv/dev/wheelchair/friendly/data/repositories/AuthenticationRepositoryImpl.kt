@@ -6,13 +6,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import miv.dev.wheelchair.friendly.data.remote.AuthenticationDataSource
+import miv.dev.wheelchair.friendly.data.remote.services.UserDataService
 import miv.dev.wheelchair.friendly.domain.entities.AuthState
 import miv.dev.wheelchair.friendly.domain.entities.Credentials
 import miv.dev.wheelchair.friendly.domain.repositories.AuthenticationRepository
 import javax.inject.Inject
 
 class AuthenticationRepositoryImpl @Inject constructor(
-	private val authenticationDataSource: AuthenticationDataSource
+	private val authenticationDataSource: AuthenticationDataSource,
+	private val userDataService: UserDataService
 ) : AuthenticationRepository {
 	
 	
@@ -27,6 +29,10 @@ class AuthenticationRepositoryImpl @Inject constructor(
 	
 	override suspend fun checkAuthState() {
 		val state = if (authenticationDataSource.isLogged()) {
+			scope.launch {
+				userDataService.getCurrentUser()
+				
+			}
 			AuthState.Authorized
 		} else {
 			AuthState.NonAuthorized

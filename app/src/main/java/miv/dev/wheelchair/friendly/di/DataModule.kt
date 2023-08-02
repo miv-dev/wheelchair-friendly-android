@@ -1,5 +1,7 @@
 package miv.dev.wheelchair.friendly.di
 
+import android.content.Context
+import android.content.SharedPreferences
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -22,6 +24,11 @@ interface DataModule {
 	fun bindAuthenticationRepository(impl: AuthenticationRepositoryImpl): AuthenticationRepository
 	
 	companion object {
+		@Provides
+		@ApplicationScope
+		fun providesSharedPreferences(context: Context): SharedPreferences {
+			return context.getSharedPreferences("my_pref",Context.MODE_PRIVATE)
+		}
 		@Provides
 		@ApplicationScope
 		fun providesHttpClient(): HttpClient {

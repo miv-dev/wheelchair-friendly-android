@@ -1,21 +1,33 @@
 package miv.dev.wheelchair.friendly.data.remote
 
+import android.content.SharedPreferences
+import androidx.core.content.edit
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import io.ktor.client.*
+import io.ktor.client.plugins.auth.*
+import io.ktor.client.plugins.auth.providers.*
 import kotlinx.coroutines.tasks.await
 import miv.dev.wheelchair.friendly.domain.entities.Credentials
 import javax.inject.Inject
 
-class AuthenticationDataSource @Inject constructor() {
+class AuthenticationDataSource @Inject constructor(
+	private val client: HttpClient,
+) {
 	
 	private val auth: FirebaseAuth by lazy {
 		Firebase.auth
 	}
 	
-	fun isLogged(): Boolean = auth.currentUser != null
+	fun isLogged(): Boolean {
+		
+		
+		return auth.currentUser != null
+	}
+	
 	
 	
 	suspend fun loginWithEmailAndPassword(

@@ -68,6 +68,7 @@ dependencies {
     // dependency injection
     implementation 'com.google.dagger:dagger:2.44'
     implementation 'androidx.window:window:1.1.0'
+    implementation 'io.ktor:ktor-client-auth:2.3.2'
     kapt 'com.google.dagger:dagger-compiler:2.44'
 
     // http call
