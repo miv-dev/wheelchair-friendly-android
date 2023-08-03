@@ -42,7 +42,7 @@ interface DataModule {
 		fun providesHttpClient(tokenService: TokenService): HttpClient {
 			val client = HttpClient(Android) {
 				defaultRequest {
-					url("http://192.168.0.36:8080/")
+					url("http://10.0.8.210:8080/")
 					contentType(ContentType.Application.Json)
 					accept(ContentType.Application.Json)
 				}
@@ -75,6 +75,8 @@ interface DataModule {
 								url("auth/refresh")
 								setBody(hashMapOf("refreshToken" to tokenService.getRefreshToken()))
 							}.body<TokenPair>()
+							tokenService.saveRefreshToken(token.refreshToken)
+							tokenService.saveBearerToken(token.accessToken)
 							BearerTokens(token.accessToken, token.refreshToken)
 						}
 						sendWithoutRequest { true }

@@ -34,7 +34,7 @@ class TokenService @Inject constructor(
 	
 	companion object{
 		const val BEARER_TOKEN_KEY = "bearer_token"
-		const val REFRESH_TOKEN_KEY ="refresh_token"
+		const val REFRESH_TOKEN_KEY = "refresh_token"
 	}
 }
 

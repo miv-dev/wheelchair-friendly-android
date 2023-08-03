@@ -51,11 +51,23 @@ class AuthenticationRepositoryImpl @Inject constructor(
 //		}
 		
 		if (credentials is Credentials.EmailAndPassword) {
-			val result = authenticationDataSource.loginWithEmailAndPassword(credentials)
-			authenticationDataSource.setTokenPair(result)
+			runCatching {
+				authenticationDataSource.loginWithEmailAndPassword(credentials)
+			}.onSuccess { tokenPair ->
+				return if (tokenPair.success && tokenPair.data != null) {
+					authenticationDataSource.setTokenPair(tokenPair.data)
+					_authState.emit(AuthState.Authorized)
+					Result.success(Unit)
+				} else {
+					Result.failure(Throwable(tokenPair.error ?: "Server error"))
+				}
+			}.onFailure {
+				return Result.failure(it)
+			}
+			
 		}
 		
-		return Result.failure(RuntimeException())
+		return Result.failure(RuntimeException("Not all types of login is implemented"))
 	}
 	
 	override suspend fun register(credentials: Credentials): Result<Unit> {
@@ -81,6 +93,7 @@ class AuthenticationRepositoryImpl @Inject constructor(
 	}
 	
 	override fun logout() {
+		authenticationDataSource.clearTokenPair()
 		scope.launch {
 			_authState.emit(AuthState.NonAuthorized)
 		}
