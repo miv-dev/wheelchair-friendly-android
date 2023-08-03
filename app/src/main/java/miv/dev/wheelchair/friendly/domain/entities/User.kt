@@ -1,11 +1,15 @@
 package miv.dev.wheelchair.friendly.domain.entities
 
+import kotlinx.serialization.Serializable
+import miv.dev.wheelchair.friendly.serializers.UUIDSerializer
+import java.util.*
+
+@Serializable
 data class User(
-	val uid: String,
+	@Serializable(with = UUIDSerializer::class)
+	val uuid: UUID,
 	val email: String,
 	val username: String,
-	val name: String,
-	val dateOfBirth: String,
 )
 
 

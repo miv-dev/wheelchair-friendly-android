@@ -1,38 +1,29 @@
 package miv.dev.wheelchair.friendly.data.remote.services
 
 import android.util.Log
+import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
-import org.json.JSONObject
+import miv.dev.wheelchair.friendly.data.local.TokenService
+import miv.dev.wheelchair.friendly.domain.entities.User
 import javax.inject.Inject
 
 class UserDataService @Inject constructor(
-	private val api: ApiDataService
+	private val client: HttpClient,
+	private val tokenService: TokenService
 ) {
 	
-	suspend fun getCurrentUser() {
-		val token = api.getToken()
-		Log.d(TAG, "getCurrentUser: $token")
-		api.request {
-			val body = get {
-				url {
-					port = 8080
-					protocol = URLProtocol.HTTP
-					host = "192.168.0.36"
-					path("api/users/current")
-					
-				}
-				
-				headers {
-					append(HttpHeaders.Authorization, token ?: "")
-				}
-			}.bodyAsText()
-			Log.d(TAG, "getCurrentUser: $body")
-		}
+	
+	suspend fun getCurrentUser(): User {
+		
+		val body: User = client.get {
+			url("api/users/current")
+		}.body()
+		Log.d(TAG, "getCurrentUser: $body")
+		return body
 	}
-	companion object{
+	
+	companion object {
 		const val TAG = "UserDataService"
 	}
 	

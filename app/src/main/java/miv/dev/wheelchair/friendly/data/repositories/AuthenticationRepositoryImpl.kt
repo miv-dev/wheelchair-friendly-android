@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 class AuthenticationRepositoryImpl @Inject constructor(
 	private val authenticationDataSource: AuthenticationDataSource,
-	private val userDataService: UserDataService
+	private val userDataService: UserDataService,
 ) : AuthenticationRepository {
 	
 	
@@ -28,62 +28,72 @@ class AuthenticationRepositoryImpl @Inject constructor(
 	
 	
 	override suspend fun checkAuthState() {
-		val state = if (authenticationDataSource.isLogged()) {
-			scope.launch {
-				userDataService.getCurrentUser()
-				
-			}
-			AuthState.Authorized
-		} else {
-			AuthState.NonAuthorized
+		scope.runCatching {
+			userDataService.getCurrentUser()
+		}.onSuccess {
+			_authState.emit(AuthState.Authorized)
+		}.onFailure {
+			_authState.emit(AuthState.NonAuthorized)
 		}
-		_authState.emit(state)
+		
 	}
 	
 	override suspend fun login(credentials: Credentials): Result<Unit> {
-		val result = when (credentials) {
-			is Credentials.EmailAndPassword -> {
+//		val result = when (credentials) {
+//			is Credentials.EmailAndPassword -> {
+//
+//			}
+//
+//			is Credentials.Google -> {
+//				// TODO: Implement
+////				authenticationDataSource.loginWithCredentials(credentials.credential)
+//			}
+//		}
+		
+		if (credentials is Credentials.EmailAndPassword) {
+			runCatching {
 				authenticationDataSource.loginWithEmailAndPassword(credentials)
+			}.onSuccess { tokenPair ->
+				return if (tokenPair.success && tokenPair.data != null) {
+					authenticationDataSource.setTokenPair(tokenPair.data)
+					_authState.emit(AuthState.Authorized)
+					Result.success(Unit)
+				} else {
+					Result.failure(Throwable(tokenPair.error ?: "Server error"))
+				}
+			}.onFailure {
+				return Result.failure(it)
 			}
 			
-			is Credentials.Google -> {
-				authenticationDataSource.loginWithCredentials(credentials.credential)
-			}
-		}
-		result.onFailure {
-			_authState.emit(AuthState.NonAuthorized)
-			return Result.failure(it)
-		}.onSuccess {
-			_authState.emit(AuthState.Authorized)
-			return Result.success(Unit)
 		}
 		
-		return Result.failure(RuntimeException())
+		return Result.failure(RuntimeException("Not all types of login is implemented"))
 	}
 	
 	override suspend fun register(credentials: Credentials): Result<Unit> {
-		val result = when (credentials) {
-			is Credentials.EmailAndPassword -> {
-				authenticationDataSource.createWithEmailAndPassword(credentials)
-			}
-			
-			is Credentials.Google -> {
-				authenticationDataSource.loginWithCredentials(credentials.credential)
-			}
-		}
-		result.onFailure {
-			_authState.emit(AuthState.NonAuthorized)
-			return Result.failure(it)
-		}.onSuccess {
-			_authState.emit(AuthState.Authorized)
-			return Result.success(Unit)
-		}
-		
-		return Result.failure(RuntimeException())
+//		val result = when (credentials) {
+//			is Credentials.EmailAndPassword -> {
+//				authenticationDataSource.createWithEmailAndPassword(credentials)
+//			}
+//
+//			is Credentials.Google -> {
+//				authenticationDataSource.loginWithCredentials(credentials.credential)
+//			}
+//		}
+//		result.onFailure {
+//			_authState.emit(AuthState.NonAuthorized)
+//			return Result.failure(it)
+//		}.onSuccess {
+//			_authState.emit(AuthState.Authorized)
+//			return Result.success(Unit)
+//		}
+//
+//		return Result.failure(RuntimeException())
+		return Result.failure(Throwable("Not implement"))
 	}
 	
 	override fun logout() {
-		authenticationDataSource.logout()
+		authenticationDataSource.clearTokenPair()
 		scope.launch {
 			_authState.emit(AuthState.NonAuthorized)
 		}
