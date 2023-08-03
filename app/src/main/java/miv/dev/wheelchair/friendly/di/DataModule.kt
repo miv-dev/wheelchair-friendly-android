@@ -20,7 +20,9 @@ import kotlinx.serialization.json.Json
 import miv.dev.wheelchair.friendly.data.local.TokenPair
 import miv.dev.wheelchair.friendly.data.local.TokenService
 import miv.dev.wheelchair.friendly.data.repositories.AuthenticationRepositoryImpl
+import miv.dev.wheelchair.friendly.data.repositories.UserRepositoryImpl
 import miv.dev.wheelchair.friendly.domain.repositories.AuthenticationRepository
+import miv.dev.wheelchair.friendly.domain.repositories.UserRepository
 
 
 @Module
@@ -29,6 +31,11 @@ interface DataModule {
 	@Binds
 	@ApplicationScope
 	fun bindAuthenticationRepository(impl: AuthenticationRepositoryImpl): AuthenticationRepository
+	
+	
+	@Binds
+	@ApplicationScope
+	fun bindUserRepository(impl: UserRepositoryImpl): UserRepository
 	
 	companion object {
 		@Provides
