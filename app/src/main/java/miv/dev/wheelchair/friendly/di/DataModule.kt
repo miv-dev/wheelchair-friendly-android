@@ -19,8 +19,11 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import miv.dev.wheelchair.friendly.data.local.TokenPair
 import miv.dev.wheelchair.friendly.data.local.TokenService
+import miv.dev.wheelchair.friendly.data.remote.Response
 import miv.dev.wheelchair.friendly.data.repositories.AuthenticationRepositoryImpl
+import miv.dev.wheelchair.friendly.data.repositories.UserRepositoryImpl
 import miv.dev.wheelchair.friendly.domain.repositories.AuthenticationRepository
+import miv.dev.wheelchair.friendly.domain.repositories.UserRepository
 
 
 @Module
@@ -29,6 +32,11 @@ interface DataModule {
 	@Binds
 	@ApplicationScope
 	fun bindAuthenticationRepository(impl: AuthenticationRepositoryImpl): AuthenticationRepository
+	
+	
+	@Binds
+	@ApplicationScope
+	fun bindUserRepository(impl: UserRepositoryImpl): UserRepository
 	
 	companion object {
 		@Provides
@@ -42,7 +50,7 @@ interface DataModule {
 		fun providesHttpClient(tokenService: TokenService): HttpClient {
 			val client = HttpClient(Android) {
 				defaultRequest {
-					url("http://10.0.8.210:8080/")
+					url("http://83.222.10.229:8080/")
 					contentType(ContentType.Application.Json)
 					accept(ContentType.Application.Json)
 				}
@@ -70,14 +78,22 @@ interface DataModule {
 							BearerTokens(bearer ?: "", refresh ?: "")
 						}
 						refreshTokens {
-							val token = client.post {
+							val response = client.post {
 								markAsRefreshTokenRequest()
 								url("auth/refresh")
 								setBody(hashMapOf("refreshToken" to tokenService.getRefreshToken()))
-							}.body<TokenPair>()
-							tokenService.saveRefreshToken(token.refreshToken)
-							tokenService.saveBearerToken(token.accessToken)
-							BearerTokens(token.accessToken, token.refreshToken)
+							}.body<Response<TokenPair>>()
+							return@refreshTokens if (response.success) {
+								response.data?.let { token ->
+									tokenService.saveRefreshToken(token.refreshToken)
+									tokenService.saveBearerToken(token.accessToken)
+									return@let BearerTokens(token.accessToken, token.refreshToken)
+								}
+							} else {
+								null
+							}
+							
+							
 						}
 						sendWithoutRequest { true }
 					}

@@ -15,16 +15,6 @@ class App : Application() {
 		)
 		
 	}
-	
-	init {
-		Log.d(TAG, "Set Places Api Key ")
-		MapKitFactory.setApiKey(MAPKIT_API_KEY);
-	}
-	
-	companion object {
-		const val TAG = "App"
-		const val MAPKIT_API_KEY = "993162c2-cefd-4075-b062-febcced606da"
-	}
 }
 
 @Composable

@@ -11,7 +11,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
+import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.MapType
+import com.yandex.mapkit.map.TextStyle
 import com.yandex.mapkit.mapview.MapView
 
 @Composable
@@ -23,13 +25,12 @@ fun Map(
 	AndroidView(
 		modifier = modifier,
 		factory = {
-			MapKitFactory.initialize(it)
+			MapKitFactory.getInstance().onStart()
 			mapView
 		},
 		onRelease = {
-			it.onStart()
-			it.map.mapType = MapType.VECTOR_MAP
-			it.map.mapObjects.addPlacemark(Point(55.751225, 37.629540))
+		
+		
 		}
 	)
 }
@@ -64,7 +65,30 @@ fun rememberMapLifecycleObserver(mapView: MapView): LifecycleEventObserver =
 			when (event) {
 				Lifecycle.Event.ON_START -> mapView.onStart()
 				Lifecycle.Event.ON_STOP -> mapView.onStop()
-				Lifecycle.Event.ON_CREATE -> mapView.onStart()
+				Lifecycle.Event.ON_CREATE -> {
+					mapView.map.move(
+						CameraPosition(
+							Point(55.751225, 37.629540),
+							/* zoom = */ 17.0f,
+							/* azimuth = */ 150.0f,
+							/* tilt = */0f
+						)
+					)
+					mapView.map.mapType = MapType.VECTOR_MAP
+
+					mapView.map.mapObjects.addPlacemark(Point(55.751225, 37.629540)).apply {
+						setText(
+							"Special place",
+							TextStyle().apply {
+								size = 10f
+								placement = TextStyle.Placement.RIGHT
+								offset = 5f
+								
+							},
+						)
+					}
+					mapView.onStart()
+				}
 				Lifecycle.Event.ON_RESUME -> {
 				
 				}
