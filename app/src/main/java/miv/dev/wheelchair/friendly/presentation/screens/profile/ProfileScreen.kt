@@ -3,10 +3,7 @@ package miv.dev.wheelchair.friendly.presentation.screens.profile
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowForward
-import androidx.compose.material.icons.outlined.Circle
-import androidx.compose.material.icons.outlined.Logout
-import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.material.icons.rounded.BugReport
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -114,7 +111,7 @@ fun ProfileScreenContent(
 					
 					
 					ElevatedCard(
-					) {
+							) {
 						ListItem(
 							headlineContent = {
 								Text(text = stringResource(id = R.string.btn_settings))
@@ -129,6 +126,26 @@ fun ProfileScreenContent(
 								Icon(
 									imageVector = Icons.Outlined.ArrowForward,
 									contentDescription = stringResource(id = R.string.btn_logout)
+								)
+							},
+						)
+					}
+					ElevatedCard(
+					) {
+						ListItem(
+							headlineContent = {
+								Text(text = stringResource(R.string.btn_support))
+							},
+							leadingContent = {
+								Icon(
+									imageVector = Icons.Outlined.QuestionMark,
+									contentDescription = stringResource(id = R.string.btn_support)
+								)
+							},
+							trailingContent = {
+								Icon(
+									imageVector = Icons.Outlined.ArrowForward,
+									contentDescription = stringResource(id = R.string.btn_support)
 								)
 							},
 						)
