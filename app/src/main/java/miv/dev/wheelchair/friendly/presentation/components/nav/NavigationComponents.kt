@@ -21,6 +21,7 @@ import miv.dev.wheelchair.friendly.utils.AppContentPosition
 fun AppNavigationRail(
 	selectedDestination: String,
 	navigationContentPosition: AppContentPosition,
+	addPlace: () -> Unit,
 	navigateToTopLevelDestination: (NavigationItem) -> Unit,
 ) {
 	NavigationRail(containerColor = MaterialTheme.colorScheme.inverseOnSurface) {
@@ -33,7 +34,7 @@ fun AppNavigationRail(
 				verticalArrangement = Arrangement.spacedBy(4.dp)
 			) {
 				FloatingActionButton(
-					onClick = { /*TODO*/ },
+					onClick = addPlace,
 					elevation = FloatingActionButtonDefaults.elevation(0.dp),
 					modifier = Modifier.padding(top = 8.dp, bottom = 32.dp),
 					containerColor = MaterialTheme.colorScheme.tertiaryContainer,

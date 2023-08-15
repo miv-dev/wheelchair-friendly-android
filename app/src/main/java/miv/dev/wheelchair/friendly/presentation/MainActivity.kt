@@ -19,8 +19,7 @@ class MainActivity : ComponentActivity() {
 	@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		MapKitFactory.setApiKey(MAPKIT_API_KEY)
-		MapKitFactory.initialize(this)
+		
 		setContent {
 			WheelchairFriendlyTheme {
 				val windowSize = calculateWindowSizeClass(this)
@@ -31,9 +30,7 @@ class MainActivity : ComponentActivity() {
 	}
 	
 	
-	companion object{
-		const val MAPKIT_API_KEY = "993162c2-cefd-4075-b062-febcced606da"
-	}
+	
 }
 
 @Composable

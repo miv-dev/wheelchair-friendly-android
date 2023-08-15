@@ -1,8 +1,6 @@
 package miv.dev.wheelchair.friendly.presentation.components.map
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -13,24 +11,71 @@ import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.MapType
+import com.yandex.mapkit.map.PlacemarkMapObject
 import com.yandex.mapkit.map.TextStyle
 import com.yandex.mapkit.mapview.MapView
+import miv.dev.wheelchair.friendly.domain.entities.Place
 
 @Composable
 fun Map(
 	modifier: Modifier = Modifier,
+	places: List<Place> = emptyList(),
+	selectedPlace:Place? = null,
 ) {
 	val mapView = rememberMapViewWithLifecycle()
+	val mapObjects = remember {
+		mutableStateListOf<PlacemarkMapObject>()
+	}
+	
+	LaunchedEffect(selectedPlace){
+		selectedPlace?.let {
+			mapView.map.move(
+				CameraPosition(
+					Point(selectedPlace.coordinates.latitude, selectedPlace.coordinates.longitude),
+					/* zoom = */ 17.0f,
+					/* azimuth = */ 150.0f,
+					/* tilt = */0f
+				)
+			)
+			mapView.onStart()
+		}
+	}
+	
+	LaunchedEffect(places) {
+		places.forEach {
+			mapView.map.mapObjects.addPlacemark(Point(it.coordinates.latitude, it.coordinates.longitude)).apply {
+				setText(
+					it.name,
+					TextStyle().apply {
+						size = 10f
+						placement = TextStyle.Placement.RIGHT
+						offset = 5f
+						
+					},
+				)
+			}
+		}
+		
+		
+		mapView.onStart()
+		
+	}
 	
 	AndroidView(
 		modifier = modifier,
 		factory = {
+			MapKitFactory.initialize(it)
 			MapKitFactory.getInstance().onStart()
+			
 			mapView
 		},
 		onRelease = {
-		
-		
+			
+			mapView.map.addTapListener {
+				println(it.geoObject.descriptionText)
+				true
+			}
+			mapView.onStart()
 		}
 	)
 }
@@ -66,29 +111,12 @@ fun rememberMapLifecycleObserver(mapView: MapView): LifecycleEventObserver =
 				Lifecycle.Event.ON_START -> mapView.onStart()
 				Lifecycle.Event.ON_STOP -> mapView.onStop()
 				Lifecycle.Event.ON_CREATE -> {
-					mapView.map.move(
-						CameraPosition(
-							Point(55.751225, 37.629540),
-							/* zoom = */ 17.0f,
-							/* azimuth = */ 150.0f,
-							/* tilt = */0f
-						)
-					)
+					
 					mapView.map.mapType = MapType.VECTOR_MAP
-
-					mapView.map.mapObjects.addPlacemark(Point(55.751225, 37.629540)).apply {
-						setText(
-							"Special place",
-							TextStyle().apply {
-								size = 10f
-								placement = TextStyle.Placement.RIGHT
-								offset = 5f
-								
-							},
-						)
-					}
-					mapView.onStart()
+					
+					
 				}
+				
 				Lifecycle.Event.ON_RESUME -> {
 				
 				}

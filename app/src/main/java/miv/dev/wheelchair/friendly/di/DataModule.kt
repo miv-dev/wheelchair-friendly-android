@@ -21,8 +21,10 @@ import miv.dev.wheelchair.friendly.data.local.TokenPair
 import miv.dev.wheelchair.friendly.data.local.TokenService
 import miv.dev.wheelchair.friendly.data.remote.Response
 import miv.dev.wheelchair.friendly.data.repositories.AuthenticationRepositoryImpl
+import miv.dev.wheelchair.friendly.data.repositories.PlaceRepositoryImpl
 import miv.dev.wheelchair.friendly.data.repositories.UserRepositoryImpl
 import miv.dev.wheelchair.friendly.domain.repositories.AuthenticationRepository
+import miv.dev.wheelchair.friendly.domain.repositories.PlaceRepository
 import miv.dev.wheelchair.friendly.domain.repositories.UserRepository
 
 
@@ -33,12 +35,18 @@ interface DataModule {
 	@ApplicationScope
 	fun bindAuthenticationRepository(impl: AuthenticationRepositoryImpl): AuthenticationRepository
 	
+	@Binds
+	@ApplicationScope
+	fun bindPlaceRepository(impl: PlaceRepositoryImpl): PlaceRepository
+	
 	
 	@Binds
 	@ApplicationScope
 	fun bindUserRepository(impl: UserRepositoryImpl): UserRepository
 	
 	companion object {
+		const val BASE_URL = "http://192.168.0.36:8080/"
+		
 		@Provides
 		@ApplicationScope
 		fun providesTokenService(context: Context): TokenService {
@@ -50,7 +58,7 @@ interface DataModule {
 		fun providesHttpClient(tokenService: TokenService): HttpClient {
 			val client = HttpClient(Android) {
 				defaultRequest {
-					url("http://83.222.10.229:8080/")
+					url(BASE_URL)
 					contentType(ContentType.Application.Json)
 					accept(ContentType.Application.Json)
 				}

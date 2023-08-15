@@ -12,10 +12,13 @@ sealed class Screen(val route: String) {
 	object Register : Screen(ROUTE_REGISTER)
 	object Welcome : Screen(ROUTE_WELCOME)
 	
+	object AddPlace: Screen(ROUTE_ADD_PLACE)
 	
 	companion object {
 		
+		
 		const val ROUTE_MAIN = "main"
+		const val ROUTE_ADD_PLACE = "add_place"
 		const val ROUTE_PROFILE = "profile"
 		const val ROUTE_LOGIN = "login"
 		const val ROUTE_REGISTER = "register"

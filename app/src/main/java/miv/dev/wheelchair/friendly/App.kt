@@ -7,6 +7,7 @@ import androidx.compose.ui.platform.LocalContext
 import com.yandex.mapkit.MapKitFactory
 import miv.dev.wheelchair.friendly.di.ApplicationComponent
 import miv.dev.wheelchair.friendly.di.DaggerApplicationComponent
+import miv.dev.wheelchair.friendly.presentation.MainActivity
 
 class App : Application() {
 	val component: ApplicationComponent by lazy {
@@ -14,6 +15,14 @@ class App : Application() {
 			this
 		)
 		
+	}
+	
+	init {
+		MapKitFactory.setApiKey(MAPKIT_API_KEY)
+	}
+	
+	companion object{
+		const val MAPKIT_API_KEY = "993162c2-cefd-4075-b062-febcced606da"
 	}
 }
 

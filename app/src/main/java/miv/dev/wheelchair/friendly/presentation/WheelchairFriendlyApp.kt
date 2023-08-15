@@ -26,10 +26,12 @@ import miv.dev.wheelchair.friendly.presentation.components.nav.AppBottomNavigati
 import miv.dev.wheelchair.friendly.presentation.components.nav.AppNavigationRail
 import miv.dev.wheelchair.friendly.presentation.navigation.NavigationItem
 import miv.dev.wheelchair.friendly.presentation.navigation.Screen
+import miv.dev.wheelchair.friendly.presentation.navigation.TOP_LEVEL_DESTINATIONS
 import miv.dev.wheelchair.friendly.presentation.navigation.graph.AuthNavGraph
 import miv.dev.wheelchair.friendly.presentation.navigation.graph.MainNavGraph
 import miv.dev.wheelchair.friendly.presentation.navigation.rememberNavigationState
 import miv.dev.wheelchair.friendly.presentation.screens.places.PlacesScreen
+import miv.dev.wheelchair.friendly.presentation.screens.places.add.AddPlaceScreen
 import miv.dev.wheelchair.friendly.presentation.screens.profile.ProfileScreen
 import miv.dev.wheelchair.friendly.utils.*
 
@@ -52,7 +54,8 @@ fun WheelchairWrapper(
 		navHostController = navigationState.navHostController,
 		navigateToTopLevelDestination = navigationState::navigateToTopLevelDestination,
 		selectedDestination = selectedDestination,
-		navigationContentPosition = navigationContentPosition
+		navigationContentPosition = navigationContentPosition,
+		navigateTo = navigationState::navigateTo
 	)
 }
 
@@ -64,6 +67,7 @@ fun WheelchairAppContent(
 	selectedDestination: String,
 	contentType: AppContentType,
 	displayFeatures: List<DisplayFeature>,
+	navigateTo: (Screen) -> Unit,
 	navigateToTopLevelDestination: (NavigationItem) -> Unit,
 	navigationContentPosition: AppContentPosition,
 ) {
@@ -96,6 +100,7 @@ fun WheelchairAppContent(
 					AppNavigationRail(
 						selectedDestination = selectedDestination,
 						navigationContentPosition = navigationContentPosition,
+						addPlace = { navigateTo(Screen.AddPlace) },
 						navigateToTopLevelDestination = navigateToTopLevelDestination
 					)
 				}
@@ -120,8 +125,15 @@ fun WheelchairAppContent(
 						homeScreenContent = {
 						
 						},
+						addPlaceScreenContent = {
+							AddPlaceScreen()
+						}
 					)
-					AnimatedVisibility(visible = navigationType == AppNavigationType.BOTTOM_NAVIGATION && keyboardState == Keyboard.Closed) {
+					AnimatedVisibility(
+						visible = navigationType == AppNavigationType.BOTTOM_NAVIGATION && keyboardState == Keyboard.Closed &&
+								TOP_LEVEL_DESTINATIONS.map { it.screen.route }.toList().contains(selectedDestination)
+								
+					) {
 						AppBottomNavigationBar(
 							selectedDestination = selectedDestination,
 							navigateToTopLevelDestination = navigateToTopLevelDestination
@@ -144,7 +156,7 @@ fun WheelchairAppContent(
 							navigationState.navHostController.popBackStack()
 						},
 						onRegisterPressed = {
-							navigationState.navigateTo(Screen.Register.route)
+							navigationState.navigateTo(Screen.Register)
 						}
 					)
 				},
@@ -157,7 +169,7 @@ fun WheelchairAppContent(
 							navigationState.navHostController.popBackStack()
 						},
 						onLoginPressed = {
-							navigationState.navigateTo(Screen.Login.route)
+							navigationState.navigateTo(Screen.Login)
 						}
 					)
 					
@@ -165,13 +177,13 @@ fun WheelchairAppContent(
 				welcomeScreenContent = {
 					Column {
 						Button(onClick = {
-							navigationState.navigateTo(Screen.Login.route)
+							navigationState.navigateTo(Screen.Login)
 							
 						}) {
 							Text("Login")
 						}
 						Button(onClick = {
-							navigationState.navigateTo(Screen.Register.route)
+							navigationState.navigateTo(Screen.Register)
 							
 						}) {
 							Text("Register")

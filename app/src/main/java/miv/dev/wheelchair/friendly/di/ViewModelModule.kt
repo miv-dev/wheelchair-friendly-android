@@ -7,6 +7,8 @@ import dagger.multibindings.IntoMap
 import miv.dev.wheelchair.friendly.presentation.AppViewModel
 import miv.dev.wheelchair.friendly.presentation.auth.login.LoginScreenViewModel
 import miv.dev.wheelchair.friendly.presentation.auth.register.RegisterScreenViewModel
+import miv.dev.wheelchair.friendly.presentation.screens.places.PlacesScreenViewModel
+import miv.dev.wheelchair.friendly.presentation.screens.places.add.AddPlaceScreenViewModel
 import miv.dev.wheelchair.friendly.presentation.screens.profile.ProfileScreenViewModel
 
 @Module
@@ -23,6 +25,20 @@ interface ViewModelModule {
 	@Binds
 	fun bindLoginScreenViewModel(
 		viewModel: LoginScreenViewModel
+	): ViewModel
+	
+	@IntoMap
+	@ViewModelKey(AddPlaceScreenViewModel::class)
+	@Binds
+	fun bindAddPlaceScreenViewModel(
+		viewModel: AddPlaceScreenViewModel
+	): ViewModel
+	
+	@IntoMap
+	@ViewModelKey(PlacesScreenViewModel::class)
+	@Binds
+	fun bindPlaceScreenViewModel(
+		viewModel: PlacesScreenViewModel
 	): ViewModel
 	
 	@IntoMap

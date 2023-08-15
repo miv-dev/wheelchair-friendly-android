@@ -1,10 +1,16 @@
 package miv.dev.wheelchair.friendly.presentation.screens.profile
 
+import android.content.res.Resources.Theme
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material.icons.rounded.BugReport
+import androidx.compose.material.icons.rounded.Place
+import androidx.compose.material.icons.rounded.RateReview
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -12,6 +18,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -91,6 +98,10 @@ fun ProfileScreenContent(
 						.fillMaxSize(),
 					verticalArrangement = Arrangement.spacedBy(10.dp)
 				) {
+					
+					
+					
+					
 					ListItem(
 						leadingContent = {
 							Icon(
@@ -107,49 +118,120 @@ fun ProfileScreenContent(
 						}
 					)
 					
-					
-					
-					
-					ElevatedCard(
-							) {
-						ListItem(
-							headlineContent = {
-								Text(text = stringResource(id = R.string.btn_settings))
-							},
-							leadingContent = {
-								Icon(
-									imageVector = Icons.Outlined.Settings,
-									contentDescription = stringResource(id = R.string.btn_settings)
-								)
-							},
-							trailingContent = {
-								Icon(
-									imageVector = Icons.Outlined.ArrowForward,
-									contentDescription = stringResource(id = R.string.btn_logout)
-								)
-							},
-						)
-					}
-					ElevatedCard(
+					LazyVerticalGrid(
+						columns = GridCells.Fixed(2),
+						horizontalArrangement = Arrangement.spacedBy(8.dp),
+						modifier = Modifier.fillMaxWidth()
 					) {
-						ListItem(
-							headlineContent = {
-								Text(text = stringResource(R.string.btn_support))
-							},
-							leadingContent = {
-								Icon(
-									imageVector = Icons.Outlined.QuestionMark,
-									contentDescription = stringResource(id = R.string.btn_support)
-								)
-							},
-							trailingContent = {
-								Icon(
-									imageVector = Icons.Outlined.ArrowForward,
-									contentDescription = stringResource(id = R.string.btn_support)
-								)
-							},
-						)
+						item {
+							Card(Modifier.aspectRatio(4f / 5f)) {
+								Column(
+									Modifier.fillMaxSize(),
+									horizontalAlignment = Alignment.CenterHorizontally,
+									verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
+								) {
+									Icon(
+										imageVector = Icons.Rounded.Place,
+										contentDescription = "Places",
+										Modifier.size(40.dp)
+									)
+									Text(text = "Places")
+								}
+							}
+						}
+						item {
+							Card(Modifier.aspectRatio(4f / 5f)) {
+								Column(
+									Modifier.fillMaxSize(),
+									horizontalAlignment = Alignment.CenterHorizontally,
+									verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
+								) {
+									Icon(
+										imageVector = Icons.Rounded.RateReview,
+										contentDescription = "Reviews",
+										Modifier.size(40.dp)
+									)
+									Text(text = "Reviews")
+								}
+							}
+						}
 					}
+//					ElevatedCard(
+//					) {
+//						ListItem(
+//							colors = ListItemDefaults.colors(
+//								theme.tertiaryContainer,
+//								theme.onTertiaryContainer
+//							),
+//							headlineContent = {
+//								Text(text = "By me a coffee")
+//							},
+//							leadingContent = {
+//								Icon(
+//									imageVector = Icons.Outlined.Coffee,
+//									contentDescription = "Coffee"
+//								)
+//							},
+//							trailingContent = {
+//								Icon(
+//									imageVector = Icons.Outlined.Outbound,
+//									contentDescription = null
+//								)
+//							},
+//						)
+//					}
+					
+					
+					Spacer(Modifier.height(16.dp))
+					ListItem(
+						modifier = Modifier
+							.clip(MaterialTheme.shapes.medium)
+							.clickable() {
+							
+							},
+						headlineContent = {
+							Text(text = stringResource(id = R.string.btn_settings))
+						},
+						leadingContent = {
+							Icon(
+								imageVector = Icons.Outlined.Settings,
+								contentDescription = stringResource(id = R.string.btn_settings)
+							)
+						},
+						trailingContent = {
+							Icon(
+								imageVector = Icons.Outlined.ArrowForward,
+								contentDescription = stringResource(id = R.string.btn_logout)
+							)
+						},
+					)
+					
+					
+					ListItem(
+						modifier = Modifier
+							.clip(MaterialTheme.shapes.medium)
+							.clickable() {
+							
+							},
+						headlineContent = {
+							Text(text = stringResource(R.string.btn_support))
+						},
+						leadingContent = {
+							Icon(
+								imageVector = Icons.Outlined.QuestionMark,
+								contentDescription = stringResource(id = R.string.btn_support)
+							)
+						},
+						trailingContent = {
+							
+							Icon(
+								imageVector = Icons.Outlined.ArrowForward,
+								contentDescription = stringResource(id = R.string.btn_support)
+							)
+							
+						},
+					)
+					
 					Card(
 						colors = CardDefaults.cardColors(
 							containerColor = theme.errorContainer,
@@ -183,4 +265,34 @@ fun ProfileScreenContent(
 		
 	}
 	
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ProfileItem(
+	trailingIcon: @Composable () -> Unit,
+	onClick: () -> Unit,
+	
+	) {
+	Card(
+		onClick = onClick
+	) {
+		ListItem(
+			headlineContent = {
+				Text(text = stringResource(R.string.btn_support))
+			},
+			leadingContent = {
+				Icon(
+					imageVector = Icons.Outlined.QuestionMark,
+					contentDescription = stringResource(id = R.string.btn_support)
+				)
+			},
+			trailingContent = {
+				Icon(
+					imageVector = Icons.Outlined.ArrowForward,
+					contentDescription = stringResource(id = R.string.btn_support)
+				)
+			},
+		)
+	}
 }

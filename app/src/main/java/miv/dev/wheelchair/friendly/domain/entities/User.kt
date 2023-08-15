@@ -10,6 +10,7 @@ data class User(
 	val uuid: UUID,
 	val email: String,
 	val username: String,
+	val places: List<Place>
 )
 
 

@@ -15,18 +15,24 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppDockedSearchBar(
-	modifier: Modifier = Modifier
+	modifier: Modifier = Modifier,
+	onActive: (Boolean) -> Unit
 ) {
 	var query by remember { mutableStateOf("") }
 	var active by remember { mutableStateOf(false) }
 	
 	DockedSearchBar(
+		
 		modifier = modifier,
 		query = query,
 		onQueryChange = { query = it },
-		onSearch = { active = true },
+		onSearch = {
+			active = true
+			onActive(true)
+		},
 		active = active,
 		onActiveChange = {
+			onActive(it)
 			active = it
 		},
 		leadingIcon = {
@@ -38,6 +44,8 @@ fun AppDockedSearchBar(
 						.padding(start = 16.dp)
 						.clickable {
 							active = false
+							onActive(false)
+							
 							query = ""
 						},
 				)
